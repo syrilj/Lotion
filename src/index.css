@@ -10,3 +10,49 @@
     padding: 0;
   }
 }
+.LoginPage {
+  text-align: center;
+}
+
+.LoginPage-header {
+  background-color: #ffffff;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.LoginPage-link {
+  color: #61dafb;
+}
+
+.button-login {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 50px;
+  width: 300px;
+  background-color: #fff;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  color: #333;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.button-login:hover {
+  background-color: #ccc;
+  color: #fff;
+  border-color: #aaa;
+}
+
+.button-login img {
+  width: 24px;
+  height: 24px;
+  margin-right: 10px;
+}

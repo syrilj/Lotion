@@ -1,41 +1,61 @@
-import React, { useState } from "react";
-import { GoogleOAuthProvider } from '@react-oauth/google';
-import LoginButton from "../components/login";
-import LogoutButton from "../components/logout";
-import { Helmet } from 'react-helmet';
+import { useState } from "react";
+import { GoogleLogin } from "@react-oauth/google";
+import jwt_decode from "jwt-decode";
+import { useGoogleLogin } from "@react-oauth/google";
+import axios from "axios";
+import "../index.css";
+import { useNavigate } from "react-router-dom";
 
-const client_id = '572348176466-51fd22tl7u7gcp26b0bcmrhj0rh08g3f.apps.googleusercontent.com'; // replace with your client ID
-const redirect_uri = "http://localhost:3000"; // replace with your redirect URI
+function LoginPage(props) {
+  const [user, setUser] = useState(null); // state to store user information
+  const navigate = useNavigate(); // hook to navigate to a new page
 
-function LoginPage() {
-  const [currentUser, setCurrentUser] = useState(null);
+  const login = useGoogleLogin({
+    onSuccess: async (response) => {
+      try {
+        const res = await axios.get(
+          "https://www.googleapis.com/oauth2/v3/userinfo",
+          {
+            headers: {
+              Authorization: `Bearer ${response.access_token}`,
+            },
+          }
+        );
 
-  const handleLoginSuccess = (credentialResponse) => {
-    setCurrentUser(credentialResponse);
-  };
+        setUser(res.data); // set user information in the state
+        props.onLogin(); // notify the parent component that the user has logged in
 
-  const handleLogoutSuccess = () => {
-    setCurrentUser(null);
-  };
+      } catch (err) {
+        console.log(err);
+      }
+    },
+  });
 
-  return (
-    <div className='LoginPage'>
-        <Helmet>
-        <meta name="referrer" content="no-referrer-when-downgrade" />
-      </Helmet>
-      <GoogleOAuthProvider client_id={client_id} redirectUri={redirect_uri}>
-        {currentUser ? (
+  if (user) {
+    return (
+      <div className="LoginPage">
+        <header className="LoginPage-header">
           <div>
-            <p>Welcome, {currentUser.profile.name}!</p>
-            <LogoutButton onSuccess={handleLogoutSuccess} />
+            <p>Welcome, {user.name}!</p>
+            <img src={user.picture} alt={user.name} />
           </div>
-        ) : (
-          <LoginButton onSuccess={handleLoginSuccess} />
-        )}
-      </GoogleOAuthProvider>
-    </div>
-  );
-}
+        </header>
+      </div>
+    );
+  } else {
+    return (
+      <div className="LoginPage">
+        <header className="LoginPage-header">
+        <button className="button-login" onClick={login}>
+  <img src="https://www.freepnglogos.com/uploads/google-logo-png/google-logo-png-google-icon-logo-png-transparent-svg-vector-bie-supply-14.png" alt="Google logo" style={{width: '20px', height: '20px', marginRight: '10px'}} />
+  Sign in with Google
+</button>
 
+
+        </header>
+      </div>
+    );
+  }
+}
 
 export default LoginPage;
