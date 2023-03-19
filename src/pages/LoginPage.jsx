@@ -1,29 +1,37 @@
+import React, { useState } from "react";
+import { GoogleOAuthProvider } from '@react-oauth/google';
 import LoginButton from "../components/login";
 import LogoutButton from "../components/logout";
-import React from "react";
-import { useEffect } from "react";
-import {gapi} from 'gapi-script'
+import { Helmet } from 'react-helmet';
 
+const client_id = "572348176466-51fd22tl7u7gcp26b0bcmrhj0rh08g3f.apps.googleusercontent.com"; // replace with your client ID
+const redirect_uri = "http://localhost:3000"; // replace with your redirect URI
 
-const client_id = "572348176466-51fd22tl7u7gcp26b0bcmrhj0rh08g3f.apps.googleusercontent.com";
+function LoginPage() {
+  const [currentUser, setCurrentUser] = useState(null);
 
-function LoginPage(){
-    useEffect(() => {
-    function start() {
-        gapi.client.init({
-            client_id: client_id,
-            scope: ""
-        })
-    };
-        gapi.load('client:auth2', start);
-        });
+  const handleLoginSuccess = (credentialResponse) => {
+    setCurrentUser(credentialResponse);
+  };
 
-    return (
-        <div className='LoginPage'>
-            <LoginButton/>
-            <LogoutButton/>
-        </div>
-    );
+  const handleLogoutSuccess = () => {
+    setCurrentUser(null);
+  };
+
+  return (
+    <div className='LoginPage'>
+        <Helmet>
+        <meta name="referrer" content="no-referrer-when-downgrade" />
+      </Helmet>
+      <GoogleOAuthProvider client_id={client_id} redirectUri={redirect_uri}>
+        {currentUser ? (
+          <LogoutButton onSuccess={handleLogoutSuccess} />
+        ) : (
+          <LoginButton onSuccess={handleLoginSuccess} />
+        )}
+      </GoogleOAuthProvider>
+    </div>
+  );
 }
 
-export default LoginPage; 
+export default LoginPage;
