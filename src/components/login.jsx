@@ -1,17 +1,19 @@
-
-
 import React, { useState } from "react";
 import { GoogleLogin } from '@react-oauth/google';
+import { useNavigate } from 'react-router-dom';
 
 const client_id = "572348176466-51fd22tl7u7gcp26b0bcmrhj0rh08g3f.apps.googleusercontent.com"; // replace with your client ID
 
 function Login() {
   const [loggedIn, setLoggedIn] = useState(false);
+  const navigate = useNavigate();
+
 
   const handleLogin = (credentialResponse) => {
     // handle the credentialResponse returned by GoogleLogin
     console.log(credentialResponse);
     setLoggedIn(true);
+    navigate('/');
   };
 
   const handleLoginError = (error) => {

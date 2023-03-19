@@ -4,7 +4,7 @@ import LoginButton from "../components/login";
 import LogoutButton from "../components/logout";
 import { Helmet } from 'react-helmet';
 
-const client_id = "572348176466-51fd22tl7u7gcp26b0bcmrhj0rh08g3f.apps.googleusercontent.com"; // replace with your client ID
+const client_id = '572348176466-51fd22tl7u7gcp26b0bcmrhj0rh08g3f.apps.googleusercontent.com'; // replace with your client ID
 const redirect_uri = "http://localhost:3000"; // replace with your redirect URI
 
 function LoginPage() {
@@ -25,7 +25,10 @@ function LoginPage() {
       </Helmet>
       <GoogleOAuthProvider client_id={client_id} redirectUri={redirect_uri}>
         {currentUser ? (
-          <LogoutButton onSuccess={handleLogoutSuccess} />
+          <div>
+            <p>Welcome, {currentUser.profile.name}!</p>
+            <LogoutButton onSuccess={handleLogoutSuccess} />
+          </div>
         ) : (
           <LoginButton onSuccess={handleLoginSuccess} />
         )}
@@ -33,5 +36,6 @@ function LoginPage() {
     </div>
   );
 }
+
 
 export default LoginPage;
