@@ -1,6 +1,5 @@
-import './index.css';
-import LoginButton from "./componets/login";
-import LogoutButton from "./componets/logout";
+import LoginButton from "../components/login";
+import LogoutButton from "../components/logout";
 import React from "react";
 import { useEffect } from "react";
 import {gapi} from 'gapi-script'

@@ -4,6 +4,7 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import Title from '../components/Title';
 const Edit = () => {
+  
   const [notes, handleNoteChange] = useOutletContext();
   const { id } = useParams(); 
   const [note, setNote] = useState(notes[id - 1] || {});
