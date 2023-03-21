@@ -22,8 +22,8 @@ function LoginPage(props) {
           }
         );
 
-        setUser(res.data); // set user information in the state
-        props.onLogin(); // notify the parent component that the user has logged in
+        const { email } = res.data; // get the email from the response
+        props.onLogin(res.data.email); // notify the parent component that the user has logged in and pass the email address as a prop
 
       } catch (err) {
         console.log(err);

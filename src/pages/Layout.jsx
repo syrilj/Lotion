@@ -11,6 +11,7 @@ const Layout = () => {
   );
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [loggedIn, setLoggedIn] = useState(false); // add a state variable for login status
+  const [email, setEmail] = useState(null); // state to store email information
 
   // update notes in local storage whenever the notes state changes
   useEffect(() => {
@@ -49,15 +50,26 @@ const Layout = () => {
     setSidebarOpen(!sidebarOpen);
   };
 
-  const handleLogin = () => {
+ 
+  const handleLogin = (email) => {
     setLoggedIn(true);
+    setEmail(email); // store email information in state
   };
 
+  const handleLogout = () => {
+    setLoggedIn(false);
+    setEmail(null); // clear email information from state
+  };
   
 
   return (
     <div className="flex flex-col h-screen">
-      <Header onToggleSidebar={handleToggleSidebar} />
+       <Header
+        onToggleSidebar={handleToggleSidebar}
+        onLogout={handleLogout}
+        email={email} // pass email information to Header component as prop
+        loggedIn = {loggedIn}
+      />
       {loggedIn ? (
         <div className="flex-1 grid grid-cols-4">
           {sidebarOpen && (
