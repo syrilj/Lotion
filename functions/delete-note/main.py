@@ -14,3 +14,4 @@ def delete_item(email, note_id):
             "note_id": note_id,
         }
     )
+
