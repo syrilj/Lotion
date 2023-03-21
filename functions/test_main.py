@@ -34,7 +34,6 @@ item = {
 # run pytest -v -k 'test_add' to run this specific test
 def test_add_item():
     res = save_note.add_item(item)
-    print(res)
     assert res is not None
 
 
@@ -61,4 +60,17 @@ def test_update_item():
 # run pytest -v -k 'test_delete' to run this specific test
 def test_delete_item():
     res = delete_note.delete_item(item["email"], item["note_id"])
+    assert res is not None
+
+
+
+def test_add_multiple_items():
+    for i in range(10):
+        item["note_id"] = i
+        res = save_note.add_item(item)
+        assert res is not None
+
+def test_get_items():
+    
+    res = get_note.get_items(item["email"])
     assert res is not None

@@ -16,3 +16,11 @@ def get_item(email, note_id):
         })
     item = response["Item"]
     return item
+
+def get_items(email):
+    # read the docs: https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/dynamodb/table/query.html
+    response = table.query(
+        KeyConditionExpression=boto3.dynamodb.conditions.Key("email").eq(email)
+    )
+    items = response["Items"]
+    return items
