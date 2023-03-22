@@ -11,6 +11,7 @@ function LoginPage(props) {
   const navigate = useNavigate(); // hook to navigate to a new page
 
   const login = useGoogleLogin({
+    flow: 'auth-code',
     onSuccess: async (response) => {
       try {
         const res = await axios.get(
@@ -21,6 +22,13 @@ function LoginPage(props) {
             },
           }
         );
+        const tokens = await axios.post(
+          'http://localhost:3001/auth/google', {
+              code: response.code,
+          });
+          
+     //   console.log(tokens);
+       // window.localStorage.setItem("token", tokens.data.access_token);
 
         const { email } = res.data;
         props.onLogin(email);
@@ -34,7 +42,7 @@ function LoginPage(props) {
       }
     },
   });
-  
+ 
   return (
     <div className="LoginPage">
       <header className="LoginPage-header">

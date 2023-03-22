@@ -83,6 +83,7 @@ const Layout = () => {
     setLoggedIn(false);
     localStorage.removeItem("token");
     window.localStorage.removeItem("isLoggedInUser");
+    navigate('/');
   };
 
 
