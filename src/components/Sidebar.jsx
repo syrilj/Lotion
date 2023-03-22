@@ -11,13 +11,16 @@ const Sidebar = ({ onAddNote, notes}) => {
       <div>
         {notes.length > 0 ? notes.map((note, index) => {
           return (
-            <Note
-              key={index}
-              title={note.title}
-              text={note.text}
-              time={note.time}
-              
-            />
+            <Link to={`/notes/${index+1}`}>
+              <Note
+                key={index}
+                title={note.title}
+                text={note.text}
+                time={note.time}
+                
+              />
+            </Link>
+            
           )
         }) : <p className="text-center py-2 text-gray-400">No Notes Yet</p>}
       </div>

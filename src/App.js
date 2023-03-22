@@ -7,7 +7,7 @@ import LoginPage from "./pages/LoginPage";
 
 function App() {
   const [isLoggedInUser, setIsLoggedInUser] = useState(
-    window.localStorage.getItem("isLoggedInUser")
+    window.localStorage.getItem("isLoggedInUser") || false
   );
 
   return (
