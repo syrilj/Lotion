@@ -28,9 +28,9 @@ function LoginPage(props) {
    
 
         const { email } = res.data;
-       props.onLogin(email);
-       setProfile(res.data)
-       //window.localStorage.setItem("profile", JSON.stringify(res.data));
+        props.onLogin(email);
+        setProfile(res.data)
+        window.localStorage.setItem("profile", JSON.stringify(res.data));
         //localStorage.setItem("token", response.access_token);
         setUser({ email });
         // set the isLoggedIn value to true when the user logs in

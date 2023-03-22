@@ -11,6 +11,8 @@ const Layout = () => {
   const [notes, setNotes] = useState(
     JSON.parse(localStorage.getItem("notes")) || []
   );
+
+  
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
   const [loggedIn, setLoggedIn] = useState(
