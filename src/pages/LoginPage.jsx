@@ -9,13 +9,13 @@ import { useNavigate } from "react-router-dom";
 function LoginPage(props) {
   const [user, setUser] = useState(null);
   const navigate = useNavigate(); // hook to navigate to a new page
-
+  const[profile,setProfile] = useState(null);
   const login = useGoogleLogin({
   
     onSuccess: async (response) => {
       try {
         const res = await axios.get(
-          "https://www.googleapis.com/oauth2/v3/userinfo",
+          `https://www.googleapis.com/oauth2/v3/userinfo?access_token=${response.access_token}`,
           {
             headers: {
               Authorization: `Bearer ${response.access_token}`,
@@ -29,6 +29,8 @@ function LoginPage(props) {
 
         const { email } = res.data;
        props.onLogin(email);
+       setProfile(res.data)
+       //window.localStorage.setItem("profile", JSON.stringify(res.data));
         //localStorage.setItem("token", response.access_token);
         setUser({ email });
         // set the isLoggedIn value to true when the user logs in
