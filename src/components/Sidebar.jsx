@@ -1,7 +1,7 @@
 
 import Note from "./Note";
 import { Link } from "react-router-dom";
-const Sidebar = ({ onAddNote, notes, onDeleteNote }) => {
+const Sidebar = ({ onAddNote, notes}) => {
   return (
     <div className='border-r-2 overflow-y-auto'>
       <div className='flex justify-between py-2 px-4 border-b-2'>
@@ -16,7 +16,7 @@ const Sidebar = ({ onAddNote, notes, onDeleteNote }) => {
               title={note.title}
               text={note.text}
               time={note.time}
-              onDeleteNote={() => onDeleteNote(index)}
+              
             />
           )
         }) : <p className="text-center py-2 text-gray-400">No Notes Yet</p>}
