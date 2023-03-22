@@ -12,9 +12,11 @@ const Layout = () => {
     JSON.parse(localStorage.getItem("notes")) || []
   );
   const [sidebarOpen, setSidebarOpen] = useState(true);
+
   const [loggedIn, setLoggedIn] = useState(
     JSON.parse(localStorage.getItem("isLoggedInUser")) || false
   );
+
   const [email, setEmail] = useState(
     JSON.parse(localStorage.getItem("userEmail")) || null
   ); // state to store email information
@@ -23,6 +25,7 @@ const Layout = () => {
   useEffect(() => {
     localStorage.setItem("notes", JSON.stringify(notes));
   }, [notes]);
+  
   useEffect(() => {
     localStorage.setItem("isLoggedInUser", JSON.stringify(loggedIn));
   }, [loggedIn]);

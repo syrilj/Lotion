@@ -26,7 +26,6 @@ import json
 def lambda_handler(event, context):
 
     http_method = event["requestContext"]["http"]["method"].lower()
-    invoker = None
     note = None
 
     if http_method == "post":
@@ -34,13 +33,20 @@ def lambda_handler(event, context):
         email = event["queryStringParameters"]["email"]
         note_id = int(event["queryStringParameters"]["note_id"])
         title = event["queryStringParameters"]["title"]
+        html = event["queryStringParameters"]["html"]
+        text = event["queryStringParameters"]["text"]
+        time_created = event["queryStringParameters"]["time_created"]
+        timestamp = event["queryStringParameters"]["timestamp"]
         note = {
             "email": email,
             "note_id": note_id,
             "title": title,
+            "html": html,
+            "text": text,
+            "time_created": time_created,
+            "timestamp": timestamp,
         }
-        if invoker == "add":
-            save_item(note)
+        save_item(note)
     return {
         "statusCode": 200,
         "body": json.dumps({

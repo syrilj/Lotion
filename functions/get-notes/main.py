@@ -16,7 +16,6 @@ table = dynamodb_resource.Table(table_name)
 #     items = response["Items"]
 #     return items
 
-import json
 
 def lambda_handler(event, context):
     http_method = event["requestContext"]["http"]["method"].lower()
