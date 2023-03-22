@@ -1,6 +1,6 @@
 import React from "react";
 
-const Header = ({ onToggleSidebar, email, onLogout }) => {
+const Header = ({ onToggleSidebar, email, onLogout, isLoggedIn }) => {
   return (
     <header className="grid grid-cols-3 justify-items-center py-3 px-6 border-b-2">
       <button
@@ -15,20 +15,19 @@ const Header = ({ onToggleSidebar, email, onLogout }) => {
           Like Notion, but worse.
         </h2>
       </div>
-      {email && (
-        <div className="flex items-center ml-auto">
-          <p className="text-gray-600 text-sm mr-2">{email}</p>
-          <button
-            className="bg-gray-500 text-white px-2 py-1 rounded"
-            onClick={onLogout}
-          >
-            Logout
-          </button>
-        </div>
-      )}
+      {isLoggedIn ? (
+       <div className="flex items-center ml-auto">
+       <p className="text-gray-600 text-sm mr-2">{email}</p>
+       <button
+         className="bg-gray-500 text-white px-2 py-1 rounded"
+         onClick={onLogout}
+       >
+         Logout
+       </button>
+     </div>
+      ) : null}
     </header>
   );
 };
 
 export default Header;
-

@@ -4,20 +4,40 @@ import Sidebar from "../components/Sidebar";
 import LoginPage from "../pages/LoginPage";
 import { useState, useEffect } from "react";
 
+
+
 const Layout = () => {
   // get notes from local storage
   const [notes, setNotes] = useState(
     JSON.parse(localStorage.getItem("notes")) || []
   );
   const [sidebarOpen, setSidebarOpen] = useState(true);
-  const [loggedIn, setLoggedIn] = useState(false); // add a state variable for login status
-  const [email, setEmail] = useState(null); // state to store email information
+  const [loggedIn, setLoggedIn] = useState(
+    JSON.parse(localStorage.getItem("isLoggedInUser")) || false
+  );
+  const [email, setEmail] = useState(
+    JSON.parse(localStorage.getItem("userEmail")) || null
+  ); // state to store email information
 
   // update notes in local storage whenever the notes state changes
   useEffect(() => {
     localStorage.setItem("notes", JSON.stringify(notes));
   }, [notes]);
+  useEffect(() => {
+    localStorage.setItem("isLoggedInUser", JSON.stringify(loggedIn));
+  }, [loggedIn]);
 
+  useEffect(() => {
+    localStorage.setItem("userEmail", JSON.stringify(email));
+  }, [email]);
+
+  // read loggedIn state from local storage on app load
+  useEffect(() => {
+    const loggedInUser = JSON.parse(localStorage.getItem("isLoggedInUser"));
+    if (loggedInUser) {
+      setLoggedIn(true);
+    }
+  }, []);
   let navigate = useNavigate();
 
   // add a new note to the notes state
@@ -50,25 +70,27 @@ const Layout = () => {
     setSidebarOpen(!sidebarOpen);
   };
 
- 
   const handleLogin = (email) => {
+    setEmail(email);
     setLoggedIn(true);
-    setEmail(email); // store email information in state
   };
 
   const handleLogout = () => {
+    setEmail(null);
     setLoggedIn(false);
-    setEmail(null); // clear email information from state
+    localStorage.removeItem("token");
+    window.localStorage.removeItem("isLoggedInUser");
   };
-  
+
+
 
   return (
     <div className="flex flex-col h-screen">
-       <Header
+      <Header
         onToggleSidebar={handleToggleSidebar}
         onLogout={handleLogout}
         email={email} // pass email information to Header component as prop
-        loggedIn = {loggedIn}
+        isLoggedIn={loggedIn}
       />
       {loggedIn ? (
         <div className="flex-1 grid grid-cols-4">
@@ -94,6 +116,6 @@ const Layout = () => {
       )}
     </div>
   );
-};
-
+  
+      }
 export default Layout;

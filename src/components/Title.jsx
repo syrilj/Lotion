@@ -4,7 +4,7 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.bubble.css";
 import {useNavigate } from "react-router-dom";
 
-const Title = ({title, time, id, mode, handleNoteSave, handleTitleChange, titleRef, handleTimeChange}) => {
+const Title = ({title, time, id, mode, handleNoteSave, handleTitleChange, titleRef, handleTimeChange, onDeleteNote}) => {
 let navigate = useNavigate();
   
 const handleDelete = () => {
@@ -14,10 +14,11 @@ const handleDelete = () => {
     const filteredNotes = savedNotes.filter((note, index) => index !== parseInt(id) - 1);
     localStorage.setItem('notes', JSON.stringify(filteredNotes));
     if (filteredNotes.length === 0) {
-      navigate('/notes');
+      window.location.href = '/notes';
     } else {
-      navigate(`/notes/1`);
+      window.location.href = `/notes/1`;
     }
+    onDeleteNote(parseInt(id) - 1);
   }
 }
   return (
