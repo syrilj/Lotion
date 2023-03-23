@@ -10,17 +10,6 @@ def save_item(note):
     # read the docs: https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/dynamodb/table/put_item.html
     return table.put_item(Item=note)
 
-# def update_item(note):
-#     # read the docs: https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/dynamodb/table/update_item.html
-#     return table.update_item(
-#         Key={
-#             "email": note["email"],
-#             "note_id": note["note_id"],
-#         },
-#         UpdateExpression="SET title = :title",
-#         ExpressionAttributeValues={":title": note["title"]},
-#     )
-
 import json
 
 def lambda_handler(event, context):
@@ -29,21 +18,20 @@ def lambda_handler(event, context):
     note = None
 
     if http_method == "post":
-        # POST and PUT use the body to get info about the request
+
         email = event["queryStringParameters"]["email"]
-        note_id = int(event["queryStringParameters"]["note_id"])
+        note_id = event["queryStringParameters"]["note_id"]
         title = event["queryStringParameters"]["title"]
         html = event["queryStringParameters"]["html"]
         text = event["queryStringParameters"]["text"]
-        time_created = event["queryStringParameters"]["time_created"]
         timestamp = event["queryStringParameters"]["timestamp"]
+
         note = {
             "email": email,
             "note_id": note_id,
             "title": title,
             "html": html,
             "text": text,
-            "time_created": time_created,
             "timestamp": timestamp,
         }
         save_item(note)

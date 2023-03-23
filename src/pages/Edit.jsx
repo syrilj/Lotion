@@ -1,46 +1,52 @@
-import { useState, useRef, useCallback } from 'react';
+import { useState, useRef, useCallback, useEffect } from 'react';
 import { useParams, useOutletContext } from 'react-router-dom';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import Title from '../components/Title';
 
 const Edit = () => {
-  const [notes, handleNoteChange] = useOutletContext();
+  const [notes, handleNoteChange, handleDelete] = useOutletContext();
   const { id } = useParams();
-  const [note, setNote] = useState(notes[id - 1] || {});
+  const [note, setNote] = useState({});
+
+  useEffect(() => {
+    if (notes !== null) {
+      const note = notes.find((note) => note.note_id === id);
+      setNote(note);
+    }
+   }, [notes, id]);
 
   const handleContentChange = (htmlEdit) => {
     if (quillRef.current) { // <-- add null check here
       //get the quill text
       const text = quillRef.current.getEditor().getText() || '';
       //update the note useState
-      setNote({
-        ...note,
+      setNote(prevNote => ({
+        ...prevNote,
         text: text,
         html: htmlEdit
-      });
-      console.log(note)
+      }));
     }
   }
   
   const handleTitleChange = useCallback((titleEdit) => {
-    setNote({
-      ...note,
-      title: titleEdit,
-    });
-  }, [note]);
+    setNote(prevNote => ({
+      ...prevNote,
+      title: titleEdit
+    }));
+  }, []);
 
   const handleTimeChange = (timeEdit) => {
-    setNote({
-      ...note,
-      time: timeEdit.target.value,
-    });
+    setNote(prevNote => ({
+      ...prevNote,
+      timestamp: timeEdit.target.value,
+    }));
   };
 
-  const handleNoteSave = () => {
+  const handleNoteSave = useCallback(() => {
     let title = titleRef.current.getEditor().getText();
-    handleNoteChange(note.html, id, note.text, title, note.time);
-  };
+    handleNoteChange(note.html, note.text, title, note.timestamp, note.email, note.note_id);
+  }, [handleNoteChange, note]);
 
   const quillRef = useRef(null);
   const titleRef = useRef(null);
@@ -49,13 +55,14 @@ const Edit = () => {
     <>
       <Title
         title={note.title}
-        time={note.time}
+        time={note.timestamp}
         id={id}
         mode="edit"
         handleNoteSave={handleNoteSave}
         handleTitleChange={handleTitleChange}
         titleRef={titleRef}
         handleTimeChange={handleTimeChange}
+        handleDelete={handleDelete}
       />
       <ReactQuill
         ref={quillRef}

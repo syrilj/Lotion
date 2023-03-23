@@ -8,7 +8,6 @@ const options = {
 
 const formatDate = (when) => {
   if(!when) return "";
-  console.log(when)
   const formatted = new Date(when).toLocaleString("en-US", options);
   if (formatted === "Invalid Date") {
       return "";

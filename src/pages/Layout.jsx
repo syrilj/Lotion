@@ -3,16 +3,13 @@ import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
 import LoginPage from "../pages/LoginPage";
 import { useState, useEffect } from "react";
-
-
+import axios from "axios";
+import { v4 as uuidv4 } from 'uuid';
 
 const Layout = () => {
-  // get notes from local storage
-  const [notes, setNotes] = useState(
-    JSON.parse(localStorage.getItem("notes")) || []
-  );
 
-  
+  const [notes, setNotes] = useState([]);
+
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
   const [loggedIn, setLoggedIn] = useState(
@@ -23,11 +20,7 @@ const Layout = () => {
     JSON.parse(localStorage.getItem("userEmail")) || null
   ); // state to store email information
 
-  // update notes in local storage whenever the notes state changes
-  useEffect(() => {
-    localStorage.setItem("notes", JSON.stringify(notes));
-  }, [notes]);
-  
+
   useEffect(() => {
     localStorage.setItem("isLoggedInUser", JSON.stringify(loggedIn));
   }, [loggedIn]);
@@ -43,33 +36,92 @@ const Layout = () => {
       setLoggedIn(true);
     }
   }, []);
+
   let navigate = useNavigate();
 
-  // add a new note to the notes state
+
   const handleAddNote = () => {
-    const savedNotes = JSON.parse(localStorage.getItem("notes")) || [];
-    const newNote = { title: "Untitled", text: "", html: "", time: "" };
-    const updatedNotes = [newNote, ...savedNotes];
-    setNotes(updatedNotes);
-    navigate(`/notes/1`);
+    const uuid = uuidv4();
+    const base_url = `https://qqh42evuovuh6yj43esr3sse5a0yqvqt.lambda-url.ca-central-1.on.aws/`
+    const current_time = new Date().toISOString().slice(0, 16);
+
+    const params = new URLSearchParams({
+      email: email,
+      note_id: uuid,
+      title: "Untitled",
+      html: "",
+      text: "",
+      timestamp: current_time
+    });
+
+    axios
+      .post(`${base_url}?${params}`)
+      .then((response) => {
+        if(response.status === 200){
+          const updatedNotes = [response.data.note, ...notes];
+          setNotes(updatedNotes);
+          navigate(`/notes/${response.data.note.note_id}`);
+        }
+      });
   };
 
-  const handleNoteChange = (htmlEdit, id, textEdit, titleEdit, timeEdit) => {
-    const savedNotes = JSON.parse(localStorage.getItem("notes")) || [];
-    const updatedNotes = savedNotes.map((note, index) => {
-      if (index === id - 1) {
-        return {
-          ...note,
-          text: textEdit,
-          title: titleEdit,
-          time: timeEdit,
-          html: htmlEdit,
-        };
-      }
-      return note;
+  const handleNoteChange = (htmlEdit, textEdit, titleEdit, timeEdit, email, uuid) => {
+
+    const base_url = `https://qqh42evuovuh6yj43esr3sse5a0yqvqt.lambda-url.ca-central-1.on.aws/`
+    const params = new URLSearchParams({
+      email: email,
+      note_id: uuid,
+      title: titleEdit,
+      html: htmlEdit,
+      text: textEdit,
+      timestamp: timeEdit
     });
-    setNotes(updatedNotes);
+
+    //check if the note actually changed
+    const note = notes.find((note) => note.note_id === uuid);
+    if (note.html === htmlEdit && note.text === textEdit && note.title === titleEdit && note.timestamp === timeEdit) {
+      return;
+    }
+
+    axios
+      .post(`${base_url}?${params}`)
+      .then((response) => {
+        if(response.status === 200){
+          //Find the note that was updated and update it in the notes state
+          const updatedNotes = notes.map((note) => {
+            if (note.note_id === response.data.note.note_id) {
+              return response.data.note;
+            }
+            return note;
+          });
+          setNotes(updatedNotes);
+        }
+      });
   };
+
+  const handleDelete = (id) => {
+    const answer = window.confirm("Are you sure?");
+    if (answer) {
+
+      const base_url = `https://6j35fygjjkpgx4voyxpjkenn5m0tavjq.lambda-url.ca-central-1.on.aws/`
+      const params = new URLSearchParams({
+        email: email,
+        note_id: id
+      });
+  
+      axios
+        .delete(`${base_url}?${params}`)
+        .then((response) => {
+          if(response.status === 200){
+            //Update notes state
+            const updatedNotes = notes.filter((note) => note.note_id !== id);
+            setNotes(updatedNotes);
+            navigate(`/notes`);
+          }
+        });
+
+    }
+  }
 
   const handleToggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
@@ -88,6 +140,13 @@ const Layout = () => {
     navigate('/');
   };
 
+  //Get notes when app is created and email changes
+  useEffect(() => {
+    const baseURL = `https://dauvuem7d7izepkhvt2cvl2slu0akbvk.lambda-url.ca-central-1.on.aws/?email=${email}`
+    axios.get(`${baseURL}`).then((response) => {
+      setNotes(response.data);
+    });
+  }, [email]);
 
 
   return (
@@ -109,11 +168,11 @@ const Layout = () => {
           )}
           {sidebarOpen ? (
             <div className="col-span-3">
-              <Outlet context={[notes, handleNoteChange]} />
+              <Outlet context={[notes, handleNoteChange, handleDelete]} />
             </div>
           ) : (
             <div className="col-span-4">
-              <Outlet context={[notes, handleNoteChange]} />
+              <Outlet context={[notes, handleNoteChange, handleDelete]} />
             </div>
           )}
         </div>

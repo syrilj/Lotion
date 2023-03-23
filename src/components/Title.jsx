@@ -2,25 +2,10 @@ import { Link } from "react-router-dom";
 import formatDate from "../hooks/formatDate";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.bubble.css";
-import {useNavigate } from "react-router-dom";
 
-const Title = ({title, time, id, mode, handleNoteSave, handleTitleChange, titleRef, handleTimeChange}) => {
-let navigate = useNavigate();
-  
-const handleDelete = () => {
-  const answer = window.confirm("Are you sure?");
-  if (answer) {
-    const savedNotes = JSON.parse(localStorage.getItem('notes'));
-    const filteredNotes = savedNotes.filter((note, index) => index !== parseInt(id) - 1);
-    localStorage.setItem('notes', JSON.stringify(filteredNotes));
-    
-    if (filteredNotes.length === 0) {
-      window.location.href = '/notes';
-    } else {
-      window.location.href = `/notes/1`;
-    }
-  }
-}
+const Title = ({title, time, id, mode, handleNoteSave, handleTitleChange, titleRef, handleTimeChange, handleDelete}) => {
+
+
   return (
     <>
       {mode === 'edit' ? 
@@ -33,7 +18,7 @@ const handleDelete = () => {
           <Link to={`/notes/${id}`}>
             <button className="hover:bg-gray-200 py-3 px-7 border-2 rounded-lg" onClick={handleNoteSave}>Save</button>
           </Link>
-          <button onClick={handleDelete} className="hover:bg-gray-200 py-3 px-7 border-2 rounded-lg">Delete</button>
+          <button onClick={() => handleDelete(id)} className="hover:bg-gray-200 py-3 px-7 border-2 rounded-lg">Delete</button>
           </div>
       </div> : 
       <div className='flex justify-between items-center px-3 py-4 border-b-2'>
@@ -45,7 +30,7 @@ const handleDelete = () => {
           <Link to={`/notes/${id}/edit`}>
             <button className="hover:bg-gray-200 py-3 px-7 border-2 rounded-lg">Edit</button>
           </Link>
-          <button onClick={handleDelete} className="hover:bg-gray-200 py-3 px-7 border-2 rounded-lg">Delete</button>
+          <button onClick={() => handleDelete(id)} className="hover:bg-gray-200 py-3 px-7 border-2 rounded-lg">Delete</button>
           </div>
       </div>
       }
