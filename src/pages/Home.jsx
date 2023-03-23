@@ -21,7 +21,7 @@ const Home = () => {
   
   return (
     <>
-      {note === undefined || id == undefined ? 
+      {note === undefined || id === undefined ? 
       <div className='flex justify-center items-center h-full'>
       <h1 className='text-3xl text-gray-400'>Select a note, or create a new one.</h1>
       </div> 

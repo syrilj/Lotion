@@ -2,15 +2,10 @@ import { Link } from "react-router-dom";
 import formatDate from "../hooks/formatDate";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.bubble.css";
-import {useNavigate } from "react-router-dom";
-import axios from "axios";
 
 const Title = ({title, time, id, mode, handleNoteSave, handleTitleChange, titleRef, handleTimeChange, handleDelete}) => {
 
-  // const dateTime = new Date(time);
-  // const isoDateTime = dateTime.toISOString();
-  console.log(time)
-  // console.log(isoDateTime);
+
   return (
     <>
       {mode === 'edit' ? 

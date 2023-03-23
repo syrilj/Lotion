@@ -6,10 +6,8 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { v4 as uuidv4 } from 'uuid';
 
-
-
 const Layout = () => {
-  // get notes from local storage
+
   const [notes, setNotes] = useState([]);
 
   const [sidebarOpen, setSidebarOpen] = useState(true);
@@ -41,10 +39,9 @@ const Layout = () => {
 
   let navigate = useNavigate();
 
-  // add a new note to the notes state
+
   const handleAddNote = () => {
     const uuid = uuidv4();
-
     const base_url = `https://qqh42evuovuh6yj43esr3sse5a0yqvqt.lambda-url.ca-central-1.on.aws/`
     const current_time = new Date().toISOString().slice(0, 16);
 

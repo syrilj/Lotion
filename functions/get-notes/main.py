@@ -7,15 +7,6 @@ table_name = "lotion-30144227"
 # create a dynamodb table object
 table = dynamodb_resource.Table(table_name)
 
-# def get_items(email):
-#     # read the docs: https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/dynamodb/table/query.html
-#     response = table.query(
-#         TableName = table_name,
-#         KeyConditionExpression=Key("email").eq(email)
-#     )
-#     items = response["Items"]
-#     return items
-
 
 def lambda_handler(event, context):
     http_method = event["requestContext"]["http"]["method"].lower()

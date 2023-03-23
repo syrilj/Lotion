@@ -13,7 +13,6 @@ const Edit = () => {
     if (notes !== null) {
       const note = notes.find((note) => note.note_id === id);
       setNote(note);
-      console.log(note);
     }
    }, [notes, id]);
 
@@ -35,7 +34,7 @@ const Edit = () => {
       ...prevNote,
       title: titleEdit
     }));
-  }, [note]);
+  }, []);
 
   const handleTimeChange = (timeEdit) => {
     setNote(prevNote => ({
@@ -63,6 +62,7 @@ const Edit = () => {
         handleTitleChange={handleTitleChange}
         titleRef={titleRef}
         handleTimeChange={handleTimeChange}
+        handleDelete={handleDelete}
       />
       <ReactQuill
         ref={quillRef}
