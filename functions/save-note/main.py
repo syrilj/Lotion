@@ -31,11 +31,11 @@ def lambda_handler(event, context):
     if http_method == "post":
         # POST and PUT use the body to get info about the request
         email = event["queryStringParameters"]["email"]
-        note_id = int(event["queryStringParameters"]["note_id"])
+        note_id = event["queryStringParameters"]["note_id"]
         title = event["queryStringParameters"]["title"]
         html = event["queryStringParameters"]["html"]
         text = event["queryStringParameters"]["text"]
-        time_created = event["queryStringParameters"]["time_created"]
+        # time_created = event["queryStringParameters"]["time_created"]
         timestamp = event["queryStringParameters"]["timestamp"]
         note = {
             "email": email,
@@ -43,7 +43,7 @@ def lambda_handler(event, context):
             "title": title,
             "html": html,
             "text": text,
-            "time_created": time_created,
+            # "time_created": time_created,
             "timestamp": timestamp,
         }
         save_item(note)

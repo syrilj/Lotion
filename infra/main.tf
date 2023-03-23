@@ -35,7 +35,7 @@ resource "aws_dynamodb_table" "lotion-30144227" {
 
   attribute {
     name = "note_id"
-    type = "N"
+    type = "S"
   }
   attribute {
     name = "email"

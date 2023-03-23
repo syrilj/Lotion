@@ -24,7 +24,7 @@ def lambda_handler(event, context):
     if http_method == "delete":
         # POST and PUT use the body to get info about the request
         email = event["queryStringParameters"]["email"]
-        note_id = int(event["queryStringParameters"]["note_id"])
+        note_id = event["queryStringParameters"]["note_id"]
         
         delete_item(email, note_id)
     return {
