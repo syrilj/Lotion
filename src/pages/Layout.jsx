@@ -42,7 +42,7 @@ const Layout = () => {
 
   const handleAddNote = () => {
     const uuid = uuidv4();
-    const base_url = `https://qqh42evuovuh6yj43esr3sse5a0yqvqt.lambda-url.ca-central-1.on.aws/`
+    const base_url = `https://zubsszp6rhq3zzqxiotfjfqyjy0szxtd.lambda-url.ca-central-1.on.aws/`
     const current_time = new Date().toISOString().slice(0, 16);
 
     const params = new URLSearchParams({
@@ -67,7 +67,7 @@ const Layout = () => {
 
   const handleNoteChange = (htmlEdit, textEdit, titleEdit, timeEdit, email, uuid) => {
 
-    const base_url = `https://qqh42evuovuh6yj43esr3sse5a0yqvqt.lambda-url.ca-central-1.on.aws/`
+    const base_url = `https://zubsszp6rhq3zzqxiotfjfqyjy0szxtd.lambda-url.ca-central-1.on.aws/`
     const params = new URLSearchParams({
       email: email,
       note_id: uuid,
@@ -142,7 +142,7 @@ const Layout = () => {
 
   //Get notes when app is created and email changes
   useEffect(() => {
-    const baseURL = `https://dauvuem7d7izepkhvt2cvl2slu0akbvk.lambda-url.ca-central-1.on.aws/?email=${email}`
+    const baseURL = `https://vk3zijue4d3u4uegdouyb6bxcq0ysbrk.lambda-url.ca-central-1.on.aws/?email=${email}`
     axios.get(`${baseURL}`).then((response) => {
       setNotes(response.data);
     });
