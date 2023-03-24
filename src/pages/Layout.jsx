@@ -104,7 +104,7 @@ const Layout = () => {
     const answer = window.confirm("Are you sure?");
     if (answer) {
 
-      const base_url = `https://6j35fygjjkpgx4voyxpjkenn5m0tavjq.lambda-url.ca-central-1.on.aws/`
+      const base_url = `https://2h7uk6ekdx6ipogu35qz6nmrrm0awruz.lambda-url.ca-central-1.on.aws/`
       const params = new URLSearchParams({
         email: email,
         note_id: id,
@@ -143,7 +143,7 @@ const Layout = () => {
 
   //Get notes when app is created and email changes
   useEffect(() => {
-    const baseURL = `https://dauvuem7d7izepkhvt2cvl2slu0akbvk.lambda-url.ca-central-1.on.aws/?email=${email}`
+    const baseURL = `https://3veynk5vovmibukypknyuoef6y0waiqd.lambda-url.ca-central-1.on.aws/?email=${email}`
     axios.get(`${baseURL}`).then((response) => {
       setNotes(response.data);
     });
