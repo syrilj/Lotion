@@ -25,7 +25,7 @@ function LoginPage(props) {
         );
      // console.log(access_token);
     //  window.localStorage.setItem("token", access_token); 
-   
+  
 
         const { email } = res.data;
         props.onLogin(email);

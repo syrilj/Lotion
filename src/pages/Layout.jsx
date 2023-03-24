@@ -9,7 +9,7 @@ import { v4 as uuidv4 } from 'uuid';
 const Layout = () => {
 
   const [notes, setNotes] = useState([]);
-
+  const [sub, setSub] = useState(JSON.parse(localStorage.getItem("profile")).sub || false);
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
   const [loggedIn, setLoggedIn] = useState(
@@ -29,6 +29,7 @@ const Layout = () => {
     localStorage.setItem("userEmail", JSON.stringify(email));
   }, [email]);
 
+  
   // read loggedIn state from local storage on app load
   useEffect(() => {
     const loggedInUser = JSON.parse(localStorage.getItem("isLoggedInUser"));
@@ -39,23 +40,21 @@ const Layout = () => {
 
   let navigate = useNavigate();
 
-
   const handleAddNote = () => {
     const uuid = uuidv4();
-    const base_url = `https://too7suhxfdftvdv6o7kkdbq2qa0kzrjq.lambda-url.ca-central-1.on.aws/`
+    const base_url = `https://qqh42evuovuh6yj43esr3sse5a0yqvqt.lambda-url.ca-central-1.on.aws/`
     const current_time = new Date().toISOString().slice(0, 16);
 
-    const params = new URLSearchParams({
-      email: email,
-      note_id: uuid,
-      title: "Untitled",
-      html: "",
-      text: "",
-      timestamp: current_time
-    });
 
     axios
-      .post(`${base_url}?${params}`)
+      .post(`${base_url}`, {
+        email: email,
+        note_id: uuid,
+        title: "Untitled",
+        html: "",
+        text: "",
+        timestamp: current_time,
+      })
       .then((response) => {
         if(response.status === 200){
           const updatedNotes = [response.data.note, ...notes];
@@ -67,15 +66,7 @@ const Layout = () => {
 
   const handleNoteChange = (htmlEdit, textEdit, titleEdit, timeEdit, email, uuid) => {
 
-    const base_url = `https://too7suhxfdftvdv6o7kkdbq2qa0kzrjq.lambda-url.ca-central-1.on.aws/`
-    const params = new URLSearchParams({
-      email: email,
-      note_id: uuid,
-      title: titleEdit,
-      html: htmlEdit,
-      text: textEdit,
-      timestamp: timeEdit
-    });
+    const base_url = `https://qqh42evuovuh6yj43esr3sse5a0yqvqt.lambda-url.ca-central-1.on.aws/`
 
     //check if the note actually changed
     const note = notes.find((note) => note.note_id === uuid);
@@ -83,8 +74,16 @@ const Layout = () => {
       return;
     }
 
+
     axios
-      .post(`${base_url}?${params}`)
+      .post(`${base_url}`, {
+        email: email,
+        note_id: uuid,
+        title: titleEdit,
+        html: htmlEdit,
+        text: textEdit,
+        timestamp: timeEdit
+      })
       .then((response) => {
         if(response.status === 200){
           //Find the note that was updated and update it in the notes state
@@ -94,6 +93,8 @@ const Layout = () => {
             }
             return note;
           });
+          console.log(response.data)
+
           setNotes(updatedNotes);
         }
       });
@@ -103,10 +104,11 @@ const Layout = () => {
     const answer = window.confirm("Are you sure?");
     if (answer) {
 
-      const base_url = `https://2h7uk6ekdx6ipogu35qz6nmrrm0awruz.lambda-url.ca-central-1.on.aws/`
+      const base_url = `https://6j35fygjjkpgx4voyxpjkenn5m0tavjq.lambda-url.ca-central-1.on.aws/`
       const params = new URLSearchParams({
         email: email,
-        note_id: id
+        note_id: id,
+        sub: sub
       });
   
       axios
@@ -142,7 +144,7 @@ const Layout = () => {
 
   //Get notes when app is created and email changes
   useEffect(() => {
-    const baseURL = `https://3veynk5vovmibukypknyuoef6y0waiqd.lambda-url.ca-central-1.on.aws/?email=${email}`
+    const baseURL = `https://dauvuem7d7izepkhvt2cvl2slu0akbvk.lambda-url.ca-central-1.on.aws/?email=${email}`
     axios.get(`${baseURL}`).then((response) => {
       setNotes(response.data);
     });
