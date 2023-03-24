@@ -42,7 +42,7 @@ const Layout = () => {
 
   const handleAddNote = () => {
     const uuid = uuidv4();
-    const base_url = `https://qqh42evuovuh6yj43esr3sse5a0yqvqt.lambda-url.ca-central-1.on.aws/`
+    const base_url = `https://too7suhxfdftvdv6o7kkdbq2qa0kzrjq.lambda-url.ca-central-1.on.aws/`
     const current_time = new Date().toISOString().slice(0, 16);
 
 
@@ -66,7 +66,7 @@ const Layout = () => {
 
   const handleNoteChange = (htmlEdit, textEdit, titleEdit, timeEdit, email, uuid) => {
 
-    const base_url = `https://qqh42evuovuh6yj43esr3sse5a0yqvqt.lambda-url.ca-central-1.on.aws/`
+    const base_url = `https://too7suhxfdftvdv6o7kkdbq2qa0kzrjq.lambda-url.ca-central-1.on.aws/`
 
     //check if the note actually changed
     const note = notes.find((note) => note.note_id === uuid);
@@ -108,7 +108,6 @@ const Layout = () => {
       const params = new URLSearchParams({
         email: email,
         note_id: id,
-        sub: sub
       });
   
       axios
