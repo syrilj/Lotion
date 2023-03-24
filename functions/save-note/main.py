@@ -18,13 +18,14 @@ def lambda_handler(event, context):
     note = None
 
     if http_method == "post":
-
-        email = event["queryStringParameters"]["email"]
-        note_id = event["queryStringParameters"]["note_id"]
-        title = event["queryStringParameters"]["title"]
-        html = event["queryStringParameters"]["html"]
-        text = event["queryStringParameters"]["text"]
-        timestamp = event["queryStringParameters"]["timestamp"]
+        body = json.loads(event["body"])
+        email = body["email"]
+        note_id = body["note_id"]
+        title = body["title"]
+        html = body["html"]
+        text = body["text"]
+        timestamp = body["timestamp"]
+        
 
         note = {
             "email": email,
@@ -38,6 +39,7 @@ def lambda_handler(event, context):
     return {
         "statusCode": 200,
         "body": json.dumps({
-            "note": note
-        })
+            "note": note,
+
+        }),
     }
