@@ -1,2 +1,2 @@
 Drop your Netlify application address here.
-https://app.netlify.com/sites/shimmering-paprenjak-35f740 
+https://shimmering-paprenjak-35f740.netlify.app/
